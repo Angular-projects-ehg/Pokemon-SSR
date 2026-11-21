@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-contact-page',
@@ -6,4 +7,14 @@ import { Component } from '@angular/core';
   templateUrl: './contact-page.html',
   styleUrl: './contact-page.css',
 })
-export default class ContactPage {}
+export default class ContactPage {
+  private title = inject(Title)
+  private meta = inject(Meta)
+ 
+  ngOnInit() {
+   this.title.setTitle('Contact Page')
+   this.meta.updateTag({ name: 'description', content: 'Este es mi contact page' })
+   this.meta.addTag({ name: 'keywords', content: 'contact, page, angular' })
+   this.meta.addTag({name:'og:title', content: 'Contact Page'})
+  }
+}
