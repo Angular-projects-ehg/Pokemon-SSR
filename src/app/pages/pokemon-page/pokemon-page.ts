@@ -27,6 +27,8 @@ export default class PokemonPage {
     stream: ({ params: id }) =>
       this.pokemonService.loadPokemon(id).pipe(
         tap((pokemon) => {
+          const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemon.id}.svg`;
+
           this.title.setTitle(`Pokemon: ${pokemon.name}`);
           this.meta.updateTag({
             name: 'description',
@@ -37,8 +39,12 @@ export default class PokemonPage {
             content: `${pokemon.name}, pokemon, pokedex`,
           });
           this.meta.updateTag({
-            name: 'og:title',
+            property: 'og:title',
             content: `Pokemon: ${pokemon.name}`,
+          });
+          this.meta.updateTag({
+            property: 'og:image',
+            content: imageUrl,
           });
         }),
       ),
