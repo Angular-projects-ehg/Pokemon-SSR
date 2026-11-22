@@ -5,4 +5,8 @@
 <hr class="my-2">
 
 
-<app-pokemon-list />
+@if (!isLoading()) {
+    <app-pokemon-list />
+} @else {
+    <app-pokemon-list-skeleton />
+}
