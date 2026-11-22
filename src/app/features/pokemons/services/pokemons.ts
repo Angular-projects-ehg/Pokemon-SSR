@@ -26,8 +26,8 @@ export class Pokemons {
 
     }
 
-    public loadPokemon(id: string): Observable<Pokemon> {
-        return this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`);
+    public loadPokemon(name: string): Observable<Pokemon> {
+        return this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${name}`);
     }
 
   

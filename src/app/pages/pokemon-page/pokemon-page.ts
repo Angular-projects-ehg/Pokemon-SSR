@@ -17,15 +17,15 @@ export default class PokemonPage {
   private title = inject(Title);
   private meta = inject(Meta);
 
-  public pokemonId = toSignal(
-    this.route.paramMap.pipe(map((params) => params.get('id') ?? '')),
+  public pokemonName = toSignal(
+    this.route.paramMap.pipe(map((params) => params.get('name') ?? '')),
     { initialValue: '' },
   );
 
   public pokemonResource = rxResource({
-    params: () => this.pokemonId(),
-    stream: ({ params: id }) =>
-      this.pokemonService.loadPokemon(id).pipe(
+    params: () => this.pokemonName(),
+    stream: ({ params: name }) =>
+      this.pokemonService.loadPokemon(name).pipe(
         tap((pokemon) => {
           const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
 
