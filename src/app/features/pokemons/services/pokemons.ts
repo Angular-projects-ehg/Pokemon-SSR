@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { SimplePokemon } from '../models/simple-pokemon.interface';
-import {map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { PokeAPIResponse } from '../models/pokemon-api.response';
+import { Pokemon } from '../models/pokemon.interface';
 
 @Service()
 export class Pokemons {
@@ -23,6 +24,10 @@ export class Pokemons {
             })))
         );
 
+    }
+
+    public loadPokemon(id: string): Observable<Pokemon> {
+        return this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`);
     }
 
   

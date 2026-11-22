@@ -1,0 +1,89 @@
+<a
+  routerLink="/pokemons"
+  class="inline-block mb-4 text-slate-300 hover:text-white hover:underline transition-colors"
+>
+  Volver al listado
+</a>
+
+@if (pokemonResource.value(); as pokemon) {
+  <section
+    class="bg-slate-800/80 border border-slate-700/60 rounded-lg shadow-md p-6 flex flex-col items-center gap-4"
+  >
+    <img
+      [src]="
+        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/' +
+        pokemon.id +
+        '.svg'
+      "
+      [alt]="pokemon.name"
+      class="w-40 h-40"
+      width="160"
+      height="160"
+    />
+
+    <div class="text-center">
+      <p class="text-slate-400 text-sm">#{{ pokemon.id }}</p>
+      <h1 class="text-3xl font-bold capitalize text-white">{{ pokemon.name }}</h1>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-2">
+      @for (item of pokemon.types; track item.type.name) {
+        <span
+          class="bg-slate-700/80 border border-slate-600 px-3 py-1 rounded capitalize text-sm"
+        >
+          {{ item.type.name }}
+        </span>
+      }
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 w-full max-w-sm mt-2">
+      <div
+        class="bg-slate-900/60 border border-slate-700/60 rounded-lg p-3 text-center"
+      >
+        <p class="text-slate-400 text-sm">Altura</p>
+        <p class="font-bold">{{ pokemon.height / 10 }} m</p>
+      </div>
+      <div
+        class="bg-slate-900/60 border border-slate-700/60 rounded-lg p-3 text-center"
+      >
+        <p class="text-slate-400 text-sm">Peso</p>
+        <p class="font-bold">{{ pokemon.weight / 10 }} kg</p>
+      </div>
+    </div>
+
+    <div class="w-full max-w-sm mt-2">
+      <h2 class="text-xl font-bold mb-3">Habilidades</h2>
+      <div class="flex flex-wrap gap-2">
+        @for (item of pokemon.abilities; track item.ability.name) {
+          <span
+            class="bg-blue-500/20 border border-blue-500/40 px-3 py-1 rounded capitalize text-sm"
+          >
+            {{ item.ability.name }}
+          </span>
+        }
+      </div>
+    </div>
+
+    <div class="w-full max-w-sm mt-2">
+      <h2 class="text-xl font-bold mb-3">Stats</h2>
+      <div class="flex flex-col gap-2">
+        @for (item of pokemon.stats; track item.stat.name) {
+          <div
+            class="bg-slate-900/60 border border-slate-700/60 rounded-lg px-3 py-2 flex justify-between"
+          >
+            <span class="capitalize text-slate-300">{{ item.stat.name }}</span>
+            <span class="font-bold">{{ item.base_stat }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+} @else {
+  <section
+    class="bg-slate-800/80 border border-slate-700/60 rounded-lg shadow-md p-6 flex flex-col items-center gap-4"
+  >
+    <div class="rounded-full animate-pulse bg-slate-700 w-40 h-40"></div>
+    <div class="h-8 w-40 bg-slate-700 rounded animate-pulse"></div>
+    <div class="h-4 w-24 bg-slate-700 rounded animate-pulse"></div>
+  </section>
+}
