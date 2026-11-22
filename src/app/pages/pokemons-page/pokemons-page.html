@@ -1,12 +1,16 @@
 <h1 class="text-3xl font-bold">Listado de pokemons</h1>
-<h2 class="text-xl">Pagina actual</h2>
+<h2 class="text-xl">Pagina actual: {{ currentPage() }}</h2>
 
 
 <hr class="my-2">
 
 
-@if (!pokemonsResource.isLoading()) {
-    <app-pokemon-list />
+@if (pokemonsResource.value()) {
+    <app-pokemon-list
+      [pokemons]="pokemonsResource.value() || []"
+      (previousPage)="goToPreviousPage()"
+      (nextPage)="goToNextPage()"
+    />
 } @else {
     <app-pokemon-list-skeleton />
 }

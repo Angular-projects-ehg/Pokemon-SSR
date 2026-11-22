@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { SimplePokemon } from '../models/simple-pokemon.interface';
-import { map, Observable, tap } from 'rxjs';
+import {map, Observable } from 'rxjs';
 import { PokeAPIResponse } from '../models/pokemon-api.response';
 
 @Service()
