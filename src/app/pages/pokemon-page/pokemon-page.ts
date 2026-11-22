@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
+import { Meta, Title } from '@angular/platform-browser';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { map } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { Pokemons } from '../../features/pokemons/services/pokemons';
 
 @Component({
@@ -13,6 +14,8 @@ import { Pokemons } from '../../features/pokemons/services/pokemons';
 export default class PokemonPage {
   private pokemonService = inject(Pokemons);
   private route = inject(ActivatedRoute);
+  private title = inject(Title);
+  private meta = inject(Meta);
 
   public pokemonId = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('id') ?? '')),
@@ -21,6 +24,23 @@ export default class PokemonPage {
 
   public pokemonResource = rxResource({
     params: () => this.pokemonId(),
-    stream: ({ params: id }) => this.pokemonService.loadPokemon(id),
+    stream: ({ params: id }) =>
+      this.pokemonService.loadPokemon(id).pipe(
+        tap((pokemon) => {
+          this.title.setTitle(`Pokemon: ${pokemon.name}`);
+          this.meta.updateTag({
+            name: 'description',
+            content: `Página del pokemon ${pokemon.name}`,
+          });
+          this.meta.updateTag({
+            name: 'keywords',
+            content: `${pokemon.name}, pokemon, pokedex`,
+          });
+          this.meta.updateTag({
+            name: 'og:title',
+            content: `Pokemon: ${pokemon.name}`,
+          });
+        }),
+      ),
   });
 }
