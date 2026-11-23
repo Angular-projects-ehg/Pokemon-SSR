@@ -1,33 +1,38 @@
-import { inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { RenderMode, ServerRoute } from '@angular/ssr';
-import { firstValueFrom } from 'rxjs';
-import { Pokemons } from './features/pokemons/services/pokemons';
+
+const routesFile = readFileSync(join(process.cwd(), 'routes.txt'), 'utf8');
+
+const prerenderRoutes = routesFile
+  .split(/\r?\n/)
+  .map((route) => route.trim())
+  .filter(Boolean);
 
 export const serverRoutes: ServerRoute[] = [
   {
     path: 'pokemons/page/:page',
     renderMode: RenderMode.Prerender,
     async getPrerenderParams() {
-      const http = inject(HttpClient);
-      const response = await firstValueFrom(
-        http.get<{ count: number }>('https://pokeapi.co/api/v2/pokemon?limit=1'),
-      );
-      const totalPages = Math.ceil(response.count / 20);
-
-      return Array.from({ length: totalPages }, (_, index) => ({
-        page: String(index + 1),
-      }));
+      return prerenderRoutes
+        .filter((route) => route.startsWith('/pokemons/page/'))
+        .map((route) => ({
+          page: route.replace('/pokemons/page/', ''),
+        }));
     },
   },
   {
     path: 'pokemons/:name',
     renderMode: RenderMode.Prerender,
     async getPrerenderParams() {
-      const pokemonsService = inject(Pokemons);
-      const pokemons = await firstValueFrom(pokemonsService.loadPage(1));
-
-      return pokemons.map((pokemon) => ({ name: pokemon.name }));
+      return prerenderRoutes
+        .filter(
+          (route) =>
+            route.startsWith('/pokemons/') && !route.startsWith('/pokemons/page/'),
+        )
+        .map((route) => ({
+          name: route.replace('/pokemons/', ''),
+        }));
     },
   },
   {
