@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "generate:routes": "node scripts/generate-routes.mjs",
+    "prebuild": "npm run generate:routes",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
