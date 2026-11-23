@@ -13,6 +13,22 @@
 
 </div>
 <div class="flex justify-between mt-4">
-    <button class="mt-2 cursor-pointer" (click)="previousPage.emit()">Anteriores</button>
-    <button class="mt-2 cursor-pointer" (click)="nextPage.emit()">Siguientes</button>
+    @if (currentPage() > 1) {
+        <a
+          class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-all cursor-pointer"
+          [routerLink]="['/pokemons/page', currentPage() - 1]"
+        >
+          Anteriores
+        </a>
+    } @else {
+        <span class="mt-2 bg-slate-600 text-white px-4 py-2 rounded opacity-70 cursor-not-allowed">
+          Anteriores
+        </span>
+    }
+    <a
+      class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-all cursor-pointer"
+      [routerLink]="['/pokemons/page', currentPage() + 1]"
+    >
+      Siguientes
+    </a>
 </div>

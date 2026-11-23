@@ -8,8 +8,7 @@
 @if (pokemonsResource.value()) {
     <app-pokemon-list
       [pokemons]="pokemonsResource.value() || []"
-      (previousPage)="goToPreviousPage()"
-      (nextPage)="goToNextPage()"
+      [currentPage]="currentPage()"
     />
 } @else {
     <app-pokemon-list-skeleton />

@@ -15,6 +15,10 @@ export const routes: Routes = [
   },
   {
     path: 'pokemons',
+    redirectTo: 'pokemons/page/1',
+  },
+  {
+    path: 'pokemons/page/:page',
     loadComponent: () => import('./pages/pokemons-page/pokemons-page'),
   },
   {
@@ -23,6 +27,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'pokemons',
+    redirectTo: 'pokemons/page/1',
   },
 ];
