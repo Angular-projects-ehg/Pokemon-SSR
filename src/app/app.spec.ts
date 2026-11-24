@@ -1,24 +1,40 @@
-import { TestBed } from '@angular/core/testing';
-import { App } from './app';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { provideRouter } from "@angular/router";
 
-describe('App', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [App],
-    })
-      .compileComponents();
-  });
+import { App } from "./app";
+import { routes } from "./app.routes";
+import { Navbar } from "./shared/components/navbar/navbar";
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
+describe("App", () => {
+    let component: App;
+    let fixture: ComponentFixture<App>;
 
-  it('should render title', async () => {
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, pokemon-ssr');
-  });
+    beforeEach( () => {
+        TestBed.configureTestingModule({
+            imports: [App],
+            providers: [provideRouter(routes)],
+        }).overrideComponent(Navbar, {
+            set: {
+                imports: [],
+                template: "<p>App Navbar</p>",
+            },
+        });
+
+        fixture = TestBed.createComponent(App);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
+
+    it("should create the app", () => {
+        expect(component).toBeTruthy();
+    });
+
+    it("should render the navbar", () => {
+        const navbar = fixture.nativeElement.querySelector("app-navbar");
+        expect(navbar).toBeTruthy();
+    });
+
+    it('should match the snapshot', () => {
+        expect(fixture.nativeElement).toMatchSnapshot();
+    });
 });
